@@ -2,27 +2,14 @@ require "formula"
 
 class Docker0100 < Formula
   homepage "http://docker.io"
-  url "https://github.com/dotcloud/docker.git", :tag => "v0.10.0"
+  url "https://get.docker.io/builds/Darwin/x86_64/docker-0.10.0"
+  version "0.10.0"
+  sha1 "044e88d5cbc83b97a653cfcd918f0822958ac3f7"
 
-  option "without-completions", "Disable bash/zsh completions"
-
-  depends_on "go" => :build
+  depends_on :arch => :x86_64
 
   def install
-    ENV["GIT_DIR"] = cached_download/".git"
-    ENV["AUTO_GOPATH"] = "1"
-    ENV["DOCKER_CLIENTONLY"] = "1"
-
-    system "hack/make.sh", "dynbinary"
-    bin.install "bundles/#{version}/dynbinary/docker-#{version}" => "docker"
-
-    if build.with? "completions"
-      bash_completion.install "contrib/completion/bash/docker"
-      zsh_completion.install "contrib/completion/zsh/_docker"
-    end
-  end
-
-  test do
-    system "#{bin}/docker", "--version"
+    bin.install "docker-0.10.0" => "docker0100"
+    chmod 0755, bin+"docker0100"
   end
 end
